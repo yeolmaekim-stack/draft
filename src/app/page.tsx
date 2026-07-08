@@ -73,12 +73,11 @@ function HomeContent() {
             야근 메뉴
             <br className="sm:hidden" /> 정해드림
           </h1>
-          <span className="portal-ring" aria-hidden />
         </div>
         <p className="max-w-xl text-sm text-[var(--text-secondary)]">
           일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요
           <br />
-          인원·취향·날씨·오늘의 이벤트까지 반영해서 top5를 골라드려요.
+          인원·취향·날씨·오늘의 이벤트까지 반영해서 top5를 정해드려요.
         </p>
         {specialDay && (
           <span className="tag w-fit !border-[var(--purple)] !text-[var(--purple)]">
@@ -164,7 +163,8 @@ function HomeContent() {
 
         {output.excludedAlways.length > 0 && (
           <p className="text-xs text-white/35">
-            🚫 야근엔 고기 구이·술은 없다는 원칙에 따라 항상 제외: {output.excludedAlways.map((r) => r.name).join(", ")}
+            🚫 먹고 또 일해야 하니 고기를 굽거나 술이 메인인 집은 추천 대상이 아니에요:{" "}
+            {output.excludedAlways.map((r) => r.name).join(", ")}
           </p>
         )}
       </div>
