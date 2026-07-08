@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Gothic_A1, Do_Hyeon } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const gothicA1 = Gothic_A1({
+  variable: "--font-kr",
   subsets: ["latin"],
+  weight: ["400", "500", "700", "800", "900"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
+const doHyeon = Do_Hyeon({
   variable: "--font-display",
   subsets: ["latin"],
-  style: ["italic", "normal"],
-  weight: ["700", "800", "900"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${gothicA1.variable} ${doHyeon.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <AppShell>{children}</AppShell>

@@ -64,11 +64,9 @@ function HomeContent() {
       {/* Hero */}
       <div className="flex flex-col items-center gap-5 py-8 text-center">
         <span className="eyebrow">✦ tonight&apos;s pick</span>
-        <div className="corner-frame px-8 py-7 sm:px-16 sm:py-10">
-          <span className="corner-frame-mark-tr" aria-hidden />
-          <span className="corner-frame-mark-bl" aria-hidden />
+        <div className="px-8 py-7 sm:px-16 sm:py-10">
           <p className="mb-2 text-sm text-[var(--text-muted)]">{formatKoreanDate(todayStr())}</p>
-          <h1 className="font-display gradient-text text-4xl italic font-black leading-tight sm:text-6xl">
+          <h1 className="font-display gradient-text text-4xl leading-tight sm:text-6xl">
             오늘 야근,
             <br className="sm:hidden" /> 뭐 먹지?
           </h1>
@@ -185,7 +183,7 @@ function HomeContent() {
                 <div className="relative">
                   <MenuImage emoji={r.menu.emoji} gradient={r.menu.gradient} />
                   <span
-                    className="font-display absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-black italic text-[#150c2a] shadow-lg"
+                    className="font-display absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-sm text-[#150c2a] shadow-lg"
                     style={{ background: "linear-gradient(135deg, var(--blue), var(--purple) 55%, var(--pink))" }}
                   >
                     {i + 1}

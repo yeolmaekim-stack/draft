@@ -15,23 +15,23 @@ function MemberCard({ member }: { member: TeamMember }) {
 
   return (
     <div className="card flex flex-col gap-3 p-5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
           <span
-            className="flex h-10 w-10 items-center justify-center rounded-full text-xl"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xl"
             style={{ background: `${member.color}33` }}
           >
             {member.emoji}
           </span>
           <input
-            className="input !w-auto !border-none !bg-transparent !px-0 text-base font-bold"
+            className="input min-w-0 flex-1 !border-none !bg-transparent !px-0 text-base font-bold"
             value={member.name}
             onChange={(e) => updateMember(member.id, { name: e.target.value })}
           />
         </div>
         <button
           onClick={() => removeMember(member.id)}
-          className="btn btn-ghost !px-2.5 !py-1 text-[12px] hover:!border-red-400 hover:!text-red-300"
+          className="btn btn-ghost shrink-0 !px-2.5 !py-1 text-[12px] hover:!border-red-400 hover:!text-red-300"
         >
           삭제
         </button>
@@ -119,7 +119,7 @@ function TeamContent() {
     <div className="flex flex-col gap-5">
       <div>
         <span className="eyebrow mb-2 w-fit">✦ the crew</span>
-        <h1 className="font-display gradient-text text-2xl italic font-black sm:text-3xl">팀원 관리</h1>
+        <h1 className="font-display gradient-text text-2xl sm:text-3xl">팀원 관리</h1>
         <p className="mt-1 text-sm text-white/55">
           좋아하는거 / 싫어하는거 / 못먹는거는 메뉴명이 아니어도 돼요. &quot;매운거&quot;, &quot;닭고기&quot;, &quot;오이&quot;처럼 자유롭게 태그로 남겨주세요.
         </p>

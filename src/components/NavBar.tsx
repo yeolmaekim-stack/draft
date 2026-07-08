@@ -20,7 +20,7 @@ export default function NavBar() {
         <Link href="/" className="flex items-center gap-2.5">
           <span className="text-xl">✦</span>
           <div className="leading-tight">
-            <p className="font-display gradient-text text-[19px] italic font-black">야근 메뉴 정해드림</p>
+            <p className="font-display gradient-text text-[20px]">야근 메뉴 정해드림</p>
             <p className="text-[11px] tracking-wide text-[var(--text-muted)]">일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요</p>
           </div>
         </Link>

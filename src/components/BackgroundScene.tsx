@@ -213,26 +213,37 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         />
       ))}
 
-      {/* 글리터처럼 반짝이는 스타 플레어 */}
+      {/* 글리터처럼 반짝이는 스타 플레어 + halo */}
       {glitter.map((g) => (
-        <svg
-          key={g.key}
-          className="absolute"
-          style={{
-            left: g.left,
-            top: g.top,
-            width: g.size,
-            height: g.size,
-            animation: `glitter-flare ${g.dur} ease-in-out ${g.delay} infinite`,
-            color: g.hue,
-          }}
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"
-            fill="currentColor"
+        <div key={g.key} className="absolute" style={{ left: g.left, top: g.top }}>
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: g.size * 3.4,
+              height: g.size * 3.4,
+              left: -(g.size * 1.2),
+              top: -(g.size * 1.2),
+              background: `radial-gradient(circle, ${g.hue} 0%, transparent 72%)`,
+              filter: "blur(3px)",
+              animation: `glitter-halo ${g.dur} ease-in-out ${g.delay} infinite`,
+            }}
           />
-        </svg>
+          <svg
+            className="relative"
+            style={{
+              width: g.size,
+              height: g.size,
+              animation: `glitter-flare ${g.dur} ease-in-out ${g.delay} infinite`,
+              color: g.hue,
+            }}
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
       ))}
 
       {/* 항상 떠 있는 달 - 야근은 늘 밤이니까 */}

@@ -25,8 +25,7 @@
 @theme inline {
   --color-background: var(--page-plane);
   --color-foreground: var(--text-primary);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-kr);
 }
 
 * {
@@ -41,7 +40,7 @@ body {
 body {
   background: var(--page-plane);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+  font-family: var(--font-kr), -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
@@ -51,7 +50,7 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-display), "Playfair Display", Georgia, serif;
+  font-family: var(--font-display), "Do Hyeon", "Apple SD Gothic Neo", sans-serif;
 }
 
 .card {
@@ -196,58 +195,6 @@ body {
   color: transparent;
 }
 
-.corner-frame {
-  position: relative;
-}
-
-.corner-frame::before,
-.corner-frame::after {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-color: var(--pink);
-  pointer-events: none;
-}
-
-.corner-frame::before {
-  top: -14px;
-  left: -14px;
-  border-top: 1.5px solid;
-  border-left: 1.5px solid;
-}
-
-.corner-frame::after {
-  bottom: -14px;
-  right: -14px;
-  border-bottom: 1.5px solid;
-  border-right: 1.5px solid;
-}
-
-.corner-frame-mark-tr {
-  content: "";
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 18px;
-  height: 18px;
-  border-top: 1.5px solid var(--blue);
-  border-right: 1.5px solid var(--blue);
-  pointer-events: none;
-}
-
-.corner-frame-mark-bl {
-  content: "";
-  position: absolute;
-  bottom: -14px;
-  left: -14px;
-  width: 18px;
-  height: 18px;
-  border-bottom: 1.5px solid var(--blue);
-  border-left: 1.5px solid var(--blue);
-  pointer-events: none;
-}
-
 .dot-grid {
   background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
   background-size: 26px 26px;
@@ -268,6 +215,12 @@ body {
   0%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
   6% { opacity: 1; transform: scale(1.3) rotate(12deg); }
   14% { opacity: 0; transform: scale(0.4) rotate(20deg); }
+}
+
+@keyframes glitter-halo {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  6% { opacity: 0.6; transform: scale(1); }
+  24% { opacity: 0; transform: scale(1.6); }
 }
 
 @keyframes spin-slow {
