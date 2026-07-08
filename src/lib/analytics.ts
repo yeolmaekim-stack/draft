@@ -1,4 +1,4 @@
-import type { DinnerLog, Restaurant } from "@/types";
+import type { DinnerLog, MenuItem, Restaurant } from "@/types";
 import { addDays, startOfMonth, startOfWeek, toDateStr } from "@/lib/dates";
 
 function avg(nums: number[]): number {
@@ -78,6 +78,14 @@ export interface Badge {
   earned: boolean;
 }
 
+function resolveMenuItem(
+  log: DinnerLog,
+  restaurantById: Map<string, Restaurant>
+): MenuItem | undefined {
+  const r = log.restaurantId ? restaurantById.get(log.restaurantId) : undefined;
+  return r?.menus.find((m) => m.name === log.menuName);
+}
+
 // 연속 일수·인원수 카운팅 같은 뻔한 뱃지 말고, 실제 기록 패턴에서 뽑아낸
 // 위트있는 뱃지들. 나이키런/당근마켓 뱃지 감성.
 export function computeBadges(logs: DinnerLog[], restaurants: Restaurant[]): Badge[] {
@@ -90,7 +98,10 @@ export function computeBadges(logs: DinnerLog[], restaurants: Restaurant[]): Bad
       { emoji: "🚶", title: "두 발이 배달앱", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
       { emoji: "🌙", title: "요일의 야근 정령", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
       { emoji: "🗺️", title: "강남역 지도 마스터", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
-      { emoji: "😇", title: "사내 모범 시민", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
+      { emoji: "🏆", title: "최애 메뉴 수호자", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
+      { emoji: "🌶️", title: "혀가 마비된 자", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
+      { emoji: "🥗", title: "클린 이터", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
+      { emoji: "🦐", title: "오마카세 인정", subtitle: "야근 식사를 기록하면 뱃지가 열려요", earned: false },
     ];
   }
 
@@ -149,23 +160,64 @@ export function computeBadges(logs: DinnerLog[], restaurants: Restaurant[]): Bad
     earned: distinctRestaurants >= 8,
   };
 
-  const brokeRule = logs.some((l) => {
-    const r = l.restaurantId ? restaurantById.get(l.restaurantId) : undefined;
-    return r ? r.menus.every((m) => m.isGrilled || m.isAlcohol) : false;
-  });
-  const ruleBadge: Badge = brokeRule
-    ? {
-        emoji: "🍖",
-        title: "규칙 브레이커",
-        subtitle: "야근엔 고기 구이·술 없다더니... 그날은 대체 무슨 일이 있었던 걸까요",
-        earned: true,
-      }
-    : {
-        emoji: "😇",
-        title: "사내 모범 시민",
-        subtitle: "야근엔 고기 구이·술 없다는 원칙, 단 한 번도 어긴 적 없어요",
-        earned: true,
-      };
+  const topMenu = topBy(logs, "menuName", 1)[0];
+  const topMenuRatio = topMenu ? topMenu.count / total : 0;
+  const favoriteMenuBadge: Badge = {
+    emoji: "🏆",
+    title: "최애 메뉴 수호자",
+    subtitle:
+      topMenu && topMenuRatio >= 0.15
+        ? `'${topMenu.name}'가 전체의 ${Math.round(topMenuRatio * 100)}%예요. 이건 이제 최애 인정`
+        : "아직 압도적인 최애가 없어요. 골고루 사랑꾼",
+    earned: topMenu ? topMenuRatio >= 0.15 : false,
+  };
 
-  return [chickenBadge, modeBadge, dayBadge, mapBadge, ruleBadge];
+  const spicyCount = logs.filter((l) => resolveMenuItem(l, restaurantById)?.spicy).length;
+  const spicyRatio = spicyCount / total;
+  const spicyBadge: Badge = {
+    emoji: "🌶️",
+    title: "혀가 마비된 자",
+    subtitle:
+      spicyRatio >= 0.6
+        ? `야근 식사 중 ${Math.round(spicyRatio * 100)}%가 매운맛이었어요. 혀가 남아있는 게 신기해요`
+        : `매운맛 비중 ${Math.round(spicyRatio * 100)}% - 순교까진 갈 길이 멀어요`,
+    earned: spicyRatio >= 0.6,
+  };
+
+  const lightCount = logs.filter((l) => resolveMenuItem(l, restaurantById)?.light).length;
+  const lightRatio = lightCount / total;
+  const lightBadge: Badge = {
+    emoji: "🥗",
+    title: "클린 이터",
+    subtitle:
+      lightRatio >= 0.45
+        ? `가벼운 메뉴가 전체의 ${Math.round(lightRatio * 100)}%. 다이어트는 없지만 죄책감도 없어요`
+        : `가벼운 메뉴 비중 ${Math.round(lightRatio * 100)}% - 아직은 클린하지 않아요`,
+    earned: lightRatio >= 0.45,
+  };
+
+  const seafoodCount = logs.filter((l) =>
+    resolveMenuItem(l, restaurantById)?.tags.includes("해산물")
+  ).length;
+  const seafoodRatio = seafoodCount / total;
+  const seafoodBadge: Badge = {
+    emoji: "🦐",
+    title: "오마카세 인정",
+    subtitle:
+      seafoodRatio >= 0.25
+        ? `해산물 메뉴가 ${Math.round(seafoodRatio * 100)}%예요. 미슐랭 심사위원 안 부럽습니다`
+        : `해산물 비중 ${Math.round(seafoodRatio * 100)}% - 아직 바다와는 안 친해요`,
+    earned: seafoodRatio >= 0.25,
+  };
+
+  return [
+    chickenBadge,
+    modeBadge,
+    dayBadge,
+    mapBadge,
+    favoriteMenuBadge,
+    spicyBadge,
+    lightBadge,
+    seafoodBadge,
+  ];
 }

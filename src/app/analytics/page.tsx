@@ -59,7 +59,7 @@ function AnalyticsContent() {
     <div className="flex flex-col gap-5">
       <div className="card-solid p-5">
         <span className="eyebrow mb-2 w-fit">✦ badges</span>
-        <p className="mb-1 text-sm font-semibold text-white/80">우리팀 야근 뱃지</p>
+        <p className="mb-1 text-sm font-semibold text-white/80">우리팀 냠냠 뱃지</p>
         <p className="mb-4 text-xs text-white/45">
           기록된 야근 식사 패턴으로 자동으로 열리는 뱃지예요. 흐린 뱃지는 아직 조건 미달성!
         </p>
