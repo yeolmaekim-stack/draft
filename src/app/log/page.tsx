@@ -137,7 +137,8 @@ function LogContent() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold">야근 식사 기록 📝</h1>
+        <span className="eyebrow mb-2 w-fit">✦ the log</span>
+        <h1 className="font-display gradient-text text-2xl italic font-black sm:text-3xl">야근 식사 기록</h1>
         <p className="mt-1 text-sm text-white/55">
           추천이랑 상관없이 실제로 뭘 먹었는지 기록해두면, 분석 탭에서 통계로 보여드리고 다음 추천에도 반영돼요.
         </p>

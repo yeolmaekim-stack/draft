@@ -55,7 +55,8 @@ function AnalyticsContent() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold">우리팀 야근 메뉴 분석표 📊</h1>
+        <span className="eyebrow mb-2 w-fit">✦ the stats</span>
+        <h1 className="font-display gradient-text text-2xl italic font-black sm:text-3xl">우리팀 야근 메뉴 분석표</h1>
         <p className="mt-1 text-sm text-white/55">
           추천 결과와 상관없이 실제로 기록한 야근 식사 데이터를 분석해요. 이 통계는 다시 오늘의 추천 알고리즘에도
           반영돼요 (📈 단골 메뉴 가산점 · 🔁 최근 방문 페널티).

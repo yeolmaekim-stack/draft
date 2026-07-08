@@ -41,6 +41,7 @@ export interface Restaurant {
   walkMinutes: number;
   deliveryMinutes: number;
   deliveryAvailable: boolean;
+  dineInAvailable: boolean;
   maxPartySize: number;
   tags: TasteTag[];
   menus: MenuItem[];

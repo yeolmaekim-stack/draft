@@ -16,7 +16,8 @@ function LunchContent() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold">오늘 점심 뭐 드셨어요? 🍱</h1>
+        <span className="eyebrow mb-2 w-fit">✦ lunch check</span>
+        <h1 className="font-display gradient-text text-2xl italic font-black sm:text-3xl">오늘 점심 뭐 드셨어요?</h1>
         <p className="mt-1 text-sm text-white/55">
           {formatKoreanDate(today)} · 점심에 먹은 메뉴는 오늘 야근 메뉴 추천에서 자동으로 피해드려요.
         </p>

@@ -118,7 +118,8 @@ function TeamContent() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-2xl font-bold">팀원 관리 🧑‍🤝‍🧑</h1>
+        <span className="eyebrow mb-2 w-fit">✦ the crew</span>
+        <h1 className="font-display gradient-text text-2xl italic font-black sm:text-3xl">팀원 관리</h1>
         <p className="mt-1 text-sm text-white/55">
           좋아하는거 / 싫어하는거 / 못먹는거는 메뉴명이 아니어도 돼요. &quot;매운거&quot;, &quot;닭고기&quot;, &quot;오이&quot;처럼 자유롭게 태그로 남겨주세요.
         </p>

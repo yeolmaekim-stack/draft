@@ -81,7 +81,7 @@ export function recommend(input: RecommendInput): RecommendOutput {
     });
 
   let candidateRestaurants = restaurants.filter((r) =>
-    input.mode === "delivery" ? r.deliveryAvailable : true
+    input.mode === "delivery" ? r.deliveryAvailable : r.dineInAvailable
   );
   if (input.mode === "dine-in" && attendees.length > 0) {
     candidateRestaurants = candidateRestaurants.filter(
@@ -110,19 +110,34 @@ export function recommend(input: RecommendInput): RecommendOutput {
       let score = 10;
       const reasons: { weight: number; reason: RecommendationReason }[] = [];
 
+      // 거리/시간 - 모드에 따라 가까울수록 유리
+      if (input.mode === "dine-in") {
+        score -= restaurant.walkMinutes * 1.1;
+        if (restaurant.walkMinutes <= 4) {
+          score += 3;
+          reasons.push({ weight: 3, reason: { emoji: "🚶", text: "사무실에서 가까움" } });
+        }
+      } else {
+        score -= restaurant.deliveryMinutes * 0.35;
+        if (restaurant.deliveryMinutes <= 22) {
+          score += 3;
+          reasons.push({ weight: 3, reason: { emoji: "🛵", text: "배달이 빠른 편" } });
+        }
+      }
+
       // 팀원 선호도
       for (const a of attendees) {
         const likedHits = overlap(a.likes, menu.tags);
         if (likedHits.length > 0) {
-          score += 3 * likedHits.length;
+          score += 4 * likedHits.length;
           reasons.push({
-            weight: 3 * likedHits.length,
+            weight: 4 * likedHits.length,
             reason: { emoji: a.emoji, text: `${a.name}이(가) 좋아하는 ${likedHits[0]}` },
           });
         }
         const dislikedHits = overlap(a.dislikes, menu.tags);
         if (dislikedHits.length > 0) {
-          score -= 3 * dislikedHits.length;
+          score -= 4 * dislikedHits.length;
         }
       }
 
@@ -172,17 +187,17 @@ export function recommend(input: RecommendInput): RecommendOutput {
       const popRestaurant = popularityByRestaurant.get(restaurant.id) ?? 0;
       const popMenu = popularityByMenu.get(`${restaurant.id}::${menu.name}`) ?? 0;
       if (popMenu > 0) {
-        const bonus = Math.min(popMenu * 2, 6);
+        const bonus = Math.min(popMenu * 1, 3);
         score += bonus;
         reasons.push({ weight: bonus, reason: { emoji: "📈", text: "우리 팀 단골 메뉴" } });
       } else if (popRestaurant > 0) {
-        const bonus = Math.min(popRestaurant, 3);
+        const bonus = Math.min(popRestaurant * 0.5, 2);
         score += bonus;
       }
 
       // 최근 3일 내 다녀온 곳은 변화를 위해 감점
       if (recentRestaurantIds.has(restaurant.id)) {
-        score -= 5;
+        score -= 3;
       }
 
       if (score > bestScore) {

@@ -11,60 +11,70 @@ function seededRandom(seed: number) {
   };
 }
 
-type Phase = "day" | "dusk" | "night";
-
-function getPhase(weather: WeatherInfo): Phase {
-  const now = new Date();
-  if (weather.sunset) {
-    const sunset = new Date(weather.sunset);
-    const diffMin = (now.getTime() - sunset.getTime()) / 60000;
-    if (diffMin >= -40 && diffMin <= 60) return "dusk";
-    return diffMin < -40 ? "day" : "night";
-  }
-  const hour = now.getHours();
-  if (hour >= 17 && hour < 19) return "dusk";
-  if (hour >= 7 && hour < 17) return "day";
-  return "night";
-}
-
-const PHASE_GRADIENT: Record<Phase, string> = {
-  day: "linear-gradient(180deg, #5f9fdb 0%, #9bc9ec 55%, #dcedf7 100%)",
-  dusk: "linear-gradient(180deg, #241a3f 0%, #6d3564 32%, #d9622f 62%, #f6b555 100%)",
-  night: "linear-gradient(180deg, #05060f 0%, #0c1026 45%, #191333 100%)",
-};
+// 야근 = 밤이니까 배경은 항상 깊은 밤(우주/심해) 톤으로 고정하고,
+// 날씨 컨디션만 파티클/틴트로 반영합니다. (일몰 시각에 따른 낮/노을 전환 없음)
+const NIGHT_GRADIENT =
+  "linear-gradient(180deg, #05040d 0%, #120f28 32%, #251a3d 60%, #1a1024 82%, #120a16 100%)";
 
 const CONDITION_TINT: Record<WeatherInfo["condition"], string> = {
   clear: "transparent",
-  cloudy: "rgba(110,112,126,0.28)",
-  rain: "rgba(14,18,32,0.4)",
-  snow: "rgba(190,202,224,0.16)",
-  thunder: "rgba(8,8,18,0.5)",
-  fog: "rgba(190,190,196,0.28)",
+  cloudy: "rgba(110,112,140,0.22)",
+  rain: "rgba(10,14,32,0.4)",
+  snow: "rgba(190,202,224,0.14)",
+  thunder: "rgba(6,6,20,0.5)",
+  fog: "rgba(160,160,190,0.22)",
 };
 
 export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
-  const phase = getPhase(weather);
   const { condition } = weather;
 
   const stars = useMemo(() => {
     const rand = seededRandom(11);
-    return Array.from({ length: 60 }).map((_, i) => ({
+    return Array.from({ length: 70 }).map((_, i) => ({
       left: `${rand() * 100}%`,
-      top: `${rand() * 62}%`,
-      size: rand() > 0.85 ? 2.4 : 1.3,
+      top: `${rand() * 78}%`,
+      size: rand() > 0.85 ? 2.6 : 1.3,
       delay: `${(rand() * 6).toFixed(2)}s`,
       dur: `${(2.5 + rand() * 3).toFixed(2)}s`,
       key: i,
     }));
   }, []);
 
+  const sparkles = useMemo(() => {
+    const rand = seededRandom(91);
+    return Array.from({ length: 8 }).map((_, i) => ({
+      left: `${8 + rand() * 84}%`,
+      top: `${6 + rand() * 55}%`,
+      size: 10 + rand() * 14,
+      dur: `${(5 + rand() * 4).toFixed(2)}s`,
+      delay: `${(rand() * 5).toFixed(2)}s`,
+      hue: rand() > 0.5 ? "var(--gold)" : "var(--pink)",
+      key: i,
+    }));
+  }, []);
+
+  const constellation = useMemo(() => {
+    const rand = seededRandom(41);
+    return Array.from({ length: 4 }).map((_, i) => {
+      const x1 = rand() * 100;
+      const y1 = rand() * 45;
+      return {
+        x1,
+        y1,
+        x2: Math.min(100, Math.max(0, x1 + (rand() - 0.5) * 30)),
+        y2: Math.min(60, Math.max(0, y1 + (rand() - 0.5) * 20)),
+        key: i,
+      };
+    });
+  }, []);
+
   const clouds = useMemo(() => {
     const rand = seededRandom(23);
-    const count = condition === "cloudy" || condition === "fog" ? 7 : condition === "rain" || condition === "thunder" ? 6 : 3;
+    const count = condition === "cloudy" || condition === "fog" ? 6 : condition === "rain" || condition === "thunder" ? 5 : 0;
     return Array.from({ length: count }).map((_, i) => ({
       top: `${8 + rand() * 40}%`,
       width: 140 + rand() * 180,
-      opacity: 0.35 + rand() * 0.35,
+      opacity: 0.22 + rand() * 0.22,
       dur: `${50 + rand() * 60}s`,
       delay: `-${Math.floor(rand() * 40)}s`,
       key: i,
@@ -95,17 +105,33 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
     }));
   }, [condition]);
 
-  const showSun = phase === "day" && (condition === "clear" || condition === "cloudy");
-  const showDuskSun = phase === "dusk";
-  const showMoon = phase === "night" && (condition === "clear" || condition === "cloudy");
-  const showStars = phase === "night" && condition !== "fog";
-
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden>
-      <div className="absolute inset-0 transition-[background] duration-1000" style={{ background: PHASE_GRADIENT[phase] }} />
+      <div className="absolute inset-0" style={{ background: NIGHT_GRADIENT }} />
       <div className="absolute inset-0" style={{ background: CONDITION_TINT[condition] }} />
 
-      {showStars && stars.map((s) => (
+      {/* 심해/네트워크 느낌의 도트 그리드 텍스처 */}
+      <div
+        className="dot-grid absolute inset-x-0 bottom-0 h-2/3"
+        style={{ maskImage: "linear-gradient(180deg, transparent, black 40%)", opacity: 0.5 }}
+      />
+
+      <svg className="absolute inset-0 h-full w-full opacity-40" preserveAspectRatio="none">
+        {constellation.map((c) => (
+          <line
+            key={c.key}
+            x1={`${c.x1}%`}
+            y1={`${c.y1}%`}
+            x2={`${c.x2}%`}
+            y2={`${c.y2}%`}
+            stroke="var(--gold)"
+            strokeWidth={1}
+            strokeDasharray="2 5"
+          />
+        ))}
+      </svg>
+
+      {stars.map((s) => (
         <span
           key={s.key}
           className="absolute rounded-full bg-white"
@@ -119,49 +145,40 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         />
       ))}
 
-      {showMoon && (
-        <div
-          className="absolute rounded-full"
+      {sparkles.map((s) => (
+        <svg
+          key={s.key}
+          className="absolute"
           style={{
-            top: "10%",
-            right: "12%",
-            width: 72,
-            height: 72,
-            background: "radial-gradient(circle at 35% 35%, #fdfdf5, #e4e0c8 70%)",
-            boxShadow: "0 0 60px 18px rgba(253,253,245,0.35)",
-            animation: "float-slow 8s ease-in-out infinite",
+            left: s.left,
+            top: s.top,
+            width: s.size,
+            height: s.size,
+            animation: `twinkle ${s.dur} ease-in-out ${s.delay} infinite, spin-slow 18s linear infinite`,
+            color: s.hue,
           }}
-        />
-      )}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"
+            fill="currentColor"
+          />
+        </svg>
+      ))}
 
-      {showSun && (
-        <div
-          className="absolute rounded-full"
-          style={{
-            top: "9%",
-            right: "14%",
-            width: 84,
-            height: 84,
-            background: "radial-gradient(circle at 35% 35%, #fff6d8, #ffd479 70%)",
-            boxShadow: "0 0 90px 26px rgba(255,212,121,0.45)",
-          }}
-        />
-      )}
-
-      {showDuskSun && (
-        <div
-          className="absolute rounded-full"
-          style={{
-            top: "48%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 130,
-            height: 130,
-            background: "radial-gradient(circle at 35% 35%, #fff0c2, #ff8a3d 70%)",
-            boxShadow: "0 0 120px 40px rgba(255,138,61,0.4)",
-          }}
-        />
-      )}
+      {/* 항상 떠 있는 달 - 야근은 늘 밤이니까 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          top: "8%",
+          right: "10%",
+          width: 76,
+          height: 76,
+          background: "radial-gradient(circle at 35% 35%, #fffaf0, #f5d78e 70%)",
+          boxShadow: "0 0 70px 20px rgba(245,215,142,0.3)",
+          animation: "float-slow 9s ease-in-out infinite",
+        }}
+      />
 
       {clouds.map((c) => (
         <div
@@ -173,7 +190,7 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
             height: c.width * 0.34,
             left: 0,
             opacity: c.opacity,
-            background: phase === "night" ? "rgba(150,150,170,0.55)" : "rgba(255,255,255,0.85)",
+            background: "rgba(180,170,210,0.5)",
             animation: `drift ${c.dur} linear ${c.delay} infinite`,
           }}
         />
@@ -215,8 +232,8 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
       )}
 
       <div
-        className="absolute inset-x-0 bottom-0 h-1/2"
-        style={{ background: "linear-gradient(180deg, transparent, rgba(5,5,10,0.55) 90%)" }}
+        className="absolute inset-x-0 bottom-0 h-1/3"
+        style={{ background: "linear-gradient(180deg, transparent, rgba(5,4,13,0.6) 100%)" }}
       />
     </div>
   );

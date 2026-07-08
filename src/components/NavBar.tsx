@@ -15,13 +15,13 @@ export default function NavBar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/30 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-black/40 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl">🌙🍜</span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="text-xl">✦</span>
           <div className="leading-tight">
-            <p className="text-[15px] font-bold text-white">야근 메뉴 정해드림</p>
-            <p className="text-[11px] text-white/50">일만 해도 힘든데 뭐 먹을지까지 고민해야겠냐</p>
+            <p className="font-display gradient-text text-[19px] italic font-black">야근 메뉴 정해드림</p>
+            <p className="text-[11px] tracking-wide text-[var(--text-muted)]">일만 해도 힘든데 뭐 먹을지까지 고민해야겠냐</p>
           </div>
         </Link>
         <nav className="scrollbar-thin flex gap-1.5 overflow-x-auto">

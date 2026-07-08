@@ -63,14 +63,17 @@ function HomeContent() {
     <div className="flex flex-col gap-6">
       {/* Hero */}
       <div className="grid gap-4 sm:grid-cols-[1.4fr_1fr]">
-        <div className="card flex flex-col justify-center gap-2 p-6">
-          <p className="text-sm text-white/50">{formatKoreanDate(todayStr())}</p>
-          <h1 className="text-2xl font-bold sm:text-3xl">오늘 야근, 뭐 먹지? 🌙</h1>
-          <p className="text-sm text-white/60">
+        <div className="card corner-frame flex flex-col justify-center gap-2 p-6">
+          <span className="eyebrow w-fit">✦ tonight&apos;s pick</span>
+          <p className="text-sm text-[var(--text-muted)]">{formatKoreanDate(todayStr())}</p>
+          <h1 className="font-display gradient-text text-3xl italic font-black sm:text-4xl">
+            오늘 야근, 뭐 먹지?
+          </h1>
+          <p className="text-sm text-[var(--text-secondary)]">
             일만 해도 힘든데 뭐 먹을지까지 고민해야겠냐 — 인원·취향·날씨·오늘의 기념일까지 반영해서 top5를 골라드려요.
           </p>
           {specialDay && (
-            <span className="tag mt-1 w-fit !border-[var(--accent)] !text-[var(--accent)]">
+            <span className="tag mt-1 w-fit !border-[var(--gold)] !text-[var(--gold)]">
               {specialDay.emoji} 오늘은 {specialDay.label}
             </span>
           )}
@@ -168,12 +171,18 @@ function HomeContent() {
         </div>
       ) : (
         <>
+          <p className="text-xs text-white/35">
+            📍 강남역 인근 실제 상호를 참고해 구성했어요. 메뉴 구성·가격은 예시이며 실제와 다를 수 있어요.
+          </p>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {output.results.map((r, i) => (
               <div key={r.restaurant.id} className="card flex flex-col gap-3 overflow-hidden p-4">
                 <div className="relative">
                   <MenuImage emoji={r.menu.emoji} gradient={r.menu.gradient} />
-                  <span className="absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/50 text-sm font-bold text-[var(--accent)] backdrop-blur">
+                  <span
+                    className="font-display absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-black italic text-[#2a0f1e] shadow-lg"
+                    style={{ background: "linear-gradient(135deg, var(--pink), var(--gold))" }}
+                  >
                     {i + 1}
                   </span>
                 </div>
