@@ -24,7 +24,7 @@ import {
   modeSplit,
 } from "@/lib/analytics";
 
-const SERIES = ["#3987e5", "#199e70", "#c98500", "#008300", "#9085e9"];
+const SERIES = ["#3987e5", "#9085e9", "#d55181"];
 const CHART_TEXT = { fill: "#c3c2b7", fontSize: 12 };
 
 function StatTile({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -64,33 +64,10 @@ function AnalyticsContent() {
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile label="이번주 평균 야근 식사 인원" value={`${week.avgHeadcount || 0}명`} sub={`${week.count}건 기록`} />
-        <StatTile label="이번달 평균 야근 식사 인원" value={`${month.avgHeadcount || 0}명`} sub={`${month.count}건 기록`} />
         <StatTile label="가장 많이 간 식당" value={bestRestaurant} sub={topRestaurants[0] ? `${topRestaurants[0].count}회 방문` : ""} />
         <StatTile label="가장 많이 먹은 메뉴" value={bestMenu} sub={topMenus[0] ? `${topMenus[0].count}회 선택` : ""} />
-      </div>
-
-      <div className="card-solid p-5">
-        <p className="mb-3 text-sm font-semibold text-white/80">주간 평균 야근 식사 인원 추이 (최근 8주)</p>
-        <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={trend} margin={{ top: 8, right: 12, left: -12, bottom: 0 }}>
-            <CartesianGrid stroke="#2c2c2a" vertical={false} />
-            <XAxis dataKey="label" tick={CHART_TEXT} axisLine={{ stroke: "#383835" }} tickLine={false} />
-            <YAxis tick={CHART_TEXT} axisLine={{ stroke: "#383835" }} tickLine={false} width={30} />
-            <Tooltip
-              contentStyle={{ background: "#232320", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10 }}
-              labelStyle={{ color: "#fff" }}
-              formatter={(value) => [`${value}명`, "평균 인원"]}
-            />
-            <Line
-              type="monotone"
-              dataKey="avgHeadcount"
-              stroke={SERIES[0]}
-              strokeWidth={2}
-              dot={{ r: 3, fill: SERIES[0] }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <StatTile label="이번주 평균 야근 식사 인원" value={`${week.avgHeadcount || 0}명`} sub={`${week.count}건 기록`} />
+        <StatTile label="이번달 평균 야근 식사 인원" value={`${month.avgHeadcount || 0}명`} sub={`${month.count}건 기록`} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -106,7 +83,7 @@ function AnalyticsContent() {
                 labelStyle={{ color: "#fff" }}
                 formatter={(value) => [`${value}회`, "방문"]}
               />
-              <Bar dataKey="count" fill={SERIES[0]} radius={[0, 4, 4, 0]} barSize={16}>
+              <Bar dataKey="count" fill={SERIES[1]} radius={[0, 4, 4, 0]} barSize={16}>
                 <LabelList dataKey="count" position="right" fill="#fff" fontSize={12} />
               </Bar>
             </BarChart>
@@ -125,7 +102,7 @@ function AnalyticsContent() {
                 labelStyle={{ color: "#fff" }}
                 formatter={(value) => [`${value}회`, "선택"]}
               />
-              <Bar dataKey="count" fill={SERIES[1]} radius={[0, 4, 4, 0]} barSize={16}>
+              <Bar dataKey="count" fill={SERIES[2]} radius={[0, 4, 4, 0]} barSize={16}>
                 <LabelList dataKey="count" position="right" fill="#fff" fontSize={12} />
               </Bar>
             </BarChart>
@@ -146,7 +123,7 @@ function AnalyticsContent() {
                 labelStyle={{ color: "#fff" }}
                 formatter={(value) => [`${value}회`, "횟수"]}
               />
-              <Bar dataKey="count" fill={SERIES[2]} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="count" fill={SERIES[0]} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -173,11 +150,34 @@ function AnalyticsContent() {
             <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
               <div
                 className="h-full rounded-full"
-                style={{ width: `${(mode.delivery / modeTotal) * 100}%`, background: SERIES[1] }}
+                style={{ width: `${(mode.delivery / modeTotal) * 100}%`, background: SERIES[2] }}
               />
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="card-solid p-5">
+        <p className="mb-3 text-sm font-semibold text-white/80">주간 평균 야근 식사 인원 추이 (최근 8주)</p>
+        <ResponsiveContainer width="100%" height={220}>
+          <LineChart data={trend} margin={{ top: 8, right: 12, left: -12, bottom: 0 }}>
+            <CartesianGrid stroke="#2c2c2a" vertical={false} />
+            <XAxis dataKey="label" tick={CHART_TEXT} axisLine={{ stroke: "#383835" }} tickLine={false} />
+            <YAxis tick={CHART_TEXT} axisLine={{ stroke: "#383835" }} tickLine={false} width={30} />
+            <Tooltip
+              contentStyle={{ background: "#232320", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10 }}
+              labelStyle={{ color: "#fff" }}
+              formatter={(value) => [`${value}명`, "평균 인원"]}
+            />
+            <Line
+              type="monotone"
+              dataKey="avgHeadcount"
+              stroke={SERIES[0]}
+              strokeWidth={2}
+              dot={{ r: 3, fill: SERIES[0] }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
