@@ -74,7 +74,9 @@ function HomeContent() {
           </h1>
         </div>
         <p className="max-w-xl text-sm text-[var(--text-secondary)]">
-          일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요 — 인원·취향·날씨·오늘의 기념일까지 반영해서 top5를 골라드려요.
+          일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요
+          <br />
+          인원·취향·날씨·오늘의 이벤트까지 반영해서 top5를 골라드려요.
         </p>
         {specialDay && (
           <span className="tag w-fit !border-[var(--purple)] !text-[var(--purple)]">

@@ -25,40 +25,11 @@ const CONDITION_TINT: Record<WeatherInfo["condition"], string> = {
   fog: "rgba(160,160,190,0.22)",
 };
 
-function DeepSeaFish({ tint, glow }: { tint: string; glow: string }) {
+function TinyFish({ tint }: { tint: string }) {
   return (
-    <svg width="64" height="30" viewBox="0 0 64 30" fill="none">
-      <path
-        d="M10 15 C10 7 22 2 36 2 C46 2 54 8 54 15 C54 22 46 28 36 28 C22 28 10 23 10 15 Z"
-        fill={tint}
-        opacity={0.55}
-      />
-      <path d="M12 15 L0 4 L4 15 L0 26 Z" fill={tint} opacity={0.5} />
-      <path d="M30 3 L34 -5 L40 3 Z" fill={tint} opacity={0.4} />
-      <line x1="48" y1="8" x2="58" y2="2" stroke={tint} strokeWidth="1" opacity={0.5} />
-      <circle cx="58" cy="2" r="2.4" fill={glow} opacity={0.9} />
-    </svg>
-  );
-}
-
-function Jellyfish({ tint }: { tint: string }) {
-  return (
-    <svg width="46" height="70" viewBox="0 0 46 70" fill="none">
-      <path
-        d="M23 2 C34 2 44 12 44 22 C44 27 34 29 23 29 C12 29 2 27 2 22 C2 12 12 2 23 2 Z"
-        fill={tint}
-        opacity={0.4}
-      />
-      {[8, 16, 23, 30, 38].map((x, i) => (
-        <path
-          key={i}
-          d={`M${x} 28 Q ${x + (i % 2 === 0 ? 6 : -6)} 46 ${x} 68`}
-          stroke={tint}
-          strokeWidth="1.4"
-          opacity={0.35}
-          fill="none"
-        />
-      ))}
+    <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+      <ellipse cx="9" cy="4" rx="7" ry="3" fill={tint} />
+      <path d="M2 4 L-3 1 L-3 7 Z" fill={tint} />
     </svg>
   );
 }
@@ -68,25 +39,25 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
 
   const stars = useMemo(() => {
     const rand = seededRandom(11);
-    return Array.from({ length: 70 }).map((_, i) => ({
+    return Array.from({ length: 90 }).map((_, i) => ({
       left: `${rand() * 100}%`,
-      top: `${rand() * 78}%`,
+      top: `${rand() * 85}%`,
       size: rand() > 0.85 ? 2.6 : 1.3,
       delay: `${(rand() * 6).toFixed(2)}s`,
-      dur: `${(2.5 + rand() * 3).toFixed(2)}s`,
+      dur: `${(2 + rand() * 3).toFixed(2)}s`,
       key: i,
     }));
   }, []);
 
-  const sparkles = useMemo(() => {
+  const glitter = useMemo(() => {
     const rand = seededRandom(91);
-    const hues = ["var(--blue)", "var(--purple)", "var(--pink)"];
-    return Array.from({ length: 8 }).map((_, i) => ({
-      left: `${8 + rand() * 84}%`,
-      top: `${6 + rand() * 55}%`,
-      size: 10 + rand() * 14,
-      dur: `${(5 + rand() * 4).toFixed(2)}s`,
-      delay: `${(rand() * 5).toFixed(2)}s`,
+    const hues = ["var(--blue)", "var(--purple)", "var(--pink)", "#ffffff"];
+    return Array.from({ length: 46 }).map((_, i) => ({
+      left: `${rand() * 100}%`,
+      top: `${rand() * 100}%`,
+      size: 6 + rand() * 11,
+      dur: `${(2.5 + rand() * 5).toFixed(2)}s`,
+      delay: `${(rand() * 8).toFixed(2)}s`,
       hue: hues[Math.floor(rand() * hues.length)],
       key: i,
     }));
@@ -107,30 +78,27 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
     });
   }, []);
 
-  const fish = useMemo(() => {
-    const rand = seededRandom(67);
-    const tints = ["#7fa8ff", "#b39dff", "#ff9ecf"];
-    return Array.from({ length: 6 }).map((_, i) => ({
-      top: `${30 + rand() * 62}%`,
-      scale: 0.6 + rand() * 0.9,
-      dur: `${(38 + rand() * 34).toFixed(0)}s`,
-      delay: `-${Math.floor(rand() * 40)}s`,
-      reverse: rand() > 0.5,
-      tint: tints[Math.floor(rand() * tints.length)],
-      glow: rand() > 0.5 ? "#ffe1f2" : "#cfe0ff",
+  const rays = useMemo(() => {
+    const rand = seededRandom(59);
+    return Array.from({ length: 4 }).map((_, i) => ({
+      left: `${10 + rand() * 60}%`,
+      width: 90 + rand() * 160,
+      rotate: -18 + rand() * 30,
+      dur: `${(7 + rand() * 5).toFixed(2)}s`,
+      delay: `${(rand() * 4).toFixed(2)}s`,
       key: i,
     }));
   }, []);
 
-  const jellies = useMemo(() => {
-    const rand = seededRandom(83);
-    const tints = ["#a78bfa", "#ff8fc7", "#6ea8ff"];
-    return Array.from({ length: 3 }).map((_, i) => ({
-      left: `${10 + rand() * 78}%`,
-      top: `${45 + rand() * 45}%`,
-      scale: 0.7 + rand() * 0.7,
-      dur: `${(10 + rand() * 6).toFixed(2)}s`,
-      delay: `${(rand() * 6).toFixed(2)}s`,
+  const fishSchool = useMemo(() => {
+    const rand = seededRandom(67);
+    const tints = ["rgba(110,140,210,0.5)", "rgba(140,120,200,0.45)", "rgba(160,130,190,0.4)"];
+    return Array.from({ length: 18 }).map((_, i) => ({
+      top: `${48 + rand() * 42}%`,
+      scale: 0.5 + rand() * 0.9,
+      dur: `${(70 + rand() * 60).toFixed(0)}s`,
+      delay: `-${Math.floor(rand() * 60)}s`,
+      reverse: rand() > 0.5,
       tint: tints[Math.floor(rand() * tints.length)],
       key: i,
     }));
@@ -189,6 +157,27 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
       <div className="absolute inset-0" style={{ background: NIGHT_GRADIENT }} />
       <div className="absolute inset-0" style={{ background: CONDITION_TINT[condition] }} />
 
+      {/* 수면 위에서 쏟아지는 빛줄기 - 심해로 들어온 빛 */}
+      {rays.map((r) => (
+        <div
+          key={r.key}
+          className="absolute top-[-10%]"
+          style={{
+            left: r.left,
+            width: r.width,
+            height: "85%",
+            transform: `rotate(${r.rotate}deg)`,
+            transformOrigin: "top center",
+            clipPath: "polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%)",
+            background:
+              "linear-gradient(180deg, rgba(210,225,255,0.28) 0%, rgba(170,195,255,0.1) 40%, transparent 78%)",
+            filter: "blur(5px)",
+            mixBlendMode: "screen",
+            animation: `twinkle ${r.dur} ease-in-out ${r.delay} infinite`,
+          }}
+        />
+      ))}
+
       {/* 심해 느낌의 도트 그리드 텍스처 */}
       <div
         className="dot-grid absolute inset-x-0 bottom-0 h-2/3"
@@ -224,17 +213,18 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         />
       ))}
 
-      {sparkles.map((s) => (
+      {/* 글리터처럼 반짝이는 스타 플레어 */}
+      {glitter.map((g) => (
         <svg
-          key={s.key}
+          key={g.key}
           className="absolute"
           style={{
-            left: s.left,
-            top: s.top,
-            width: s.size,
-            height: s.size,
-            animation: `twinkle ${s.dur} ease-in-out ${s.delay} infinite, spin-slow 18s linear infinite`,
-            color: s.hue,
+            left: g.left,
+            top: g.top,
+            width: g.size,
+            height: g.size,
+            animation: `glitter-flare ${g.dur} ease-in-out ${g.delay} infinite`,
+            color: g.hue,
           }}
           viewBox="0 0 24 24"
         >
@@ -259,8 +249,8 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         }}
       />
 
-      {/* 심해를 헤엄치는 물고기들 */}
-      {fish.map((f) => (
+      {/* 저 아래에서 헤엄치는 작은 물고기 떼 */}
+      {fishSchool.map((f) => (
         <div
           key={f.key}
           className="absolute"
@@ -269,28 +259,11 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
             left: 0,
             width: "100%",
             animation: `${f.reverse ? "drift-reverse" : "drift"} ${f.dur} linear ${f.delay} infinite`,
-            opacity: 0.8,
           }}
         >
           <div style={{ transform: `scale(${f.scale}) ${f.reverse ? "scaleX(-1)" : ""}`, width: "fit-content" }}>
-            <DeepSeaFish tint={f.tint} glow={f.glow} />
+            <TinyFish tint={f.tint} />
           </div>
-        </div>
-      ))}
-
-      {/* 두둥실 떠다니는 해파리 */}
-      {jellies.map((j) => (
-        <div
-          key={j.key}
-          className="absolute"
-          style={{
-            left: j.left,
-            top: j.top,
-            transform: `scale(${j.scale})`,
-            animation: `float-slow ${j.dur} ease-in-out ${j.delay} infinite`,
-          }}
-        >
-          <Jellyfish tint={j.tint} />
         </div>
       ))}
 
