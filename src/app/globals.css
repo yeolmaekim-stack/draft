@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --page-plane: #0d0d0d;
+  --surface-1: #1a1a19;
+  --surface-1-glass: rgba(26, 26, 25, 0.66);
+  --surface-2: #232320;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --gridline: #2c2c2a;
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #eda100;
+  --accent-strong: #eb6834;
+  --accent-soft: rgba(237, 161, 0, 0.16);
+  --good: #0ca30c;
+  --critical: #e66767;
+}
+
+@theme inline {
+  --color-background: var(--page-plane);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--page-plane);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: #1a1a19;
+}
+
+.card {
+  background: var(--surface-1-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.card-solid {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tag-like {
+  color: #b9f0c9;
+  background: rgba(27, 175, 122, 0.14);
+  border-color: rgba(27, 175, 122, 0.3);
+}
+
+.tag-dislike {
+  color: #f5c0c0;
+  background: rgba(227, 73, 72, 0.14);
+  border-color: rgba(227, 73, 72, 0.3);
+}
+
+.tag-cannot {
+  color: #ffd9d9;
+  background: rgba(227, 73, 72, 0.24);
+  border-color: rgba(227, 73, 72, 0.5);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #1a1200;
+  border-color: transparent;
+}
+
+.btn-primary:hover {
+  background: var(--accent-strong);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.btn-ghost.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes drift {
+  from { transform: translateX(-10%); }
+  to { transform: translateX(110%); }
+}
+
+@keyframes rain-fall {
+  from { transform: translateY(-10%); opacity: 0; }
+  10% { opacity: 1; }
+  to { transform: translateY(110%); opacity: 0.2; }
+}
+
+.leaflet-container {
+  background: #1a1a19 !important;
+  border-radius: 16px;
+}
