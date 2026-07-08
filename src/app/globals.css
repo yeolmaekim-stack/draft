@@ -161,14 +161,28 @@ body {
   color: var(--text-muted);
 }
 
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--purple) rgba(255, 255, 255, 0.05);
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   height: 6px;
   width: 6px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: var(--border);
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+  border-radius: 999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.15);
 }
 
 /* --- Y2K decorative chrome --- */

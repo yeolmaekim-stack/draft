@@ -63,7 +63,7 @@ function AnalyticsContent() {
         <p className="mb-4 text-xs text-white/45">
           기록된 야근 식사 패턴으로 자동으로 열리는 뱃지예요. 흐린 뱃지는 아직 조건 미달성!
         </p>
-        <div className="scrollbar-thin flex gap-4 overflow-x-auto pb-1">
+        <div className="scrollbar-thin flex gap-4 overflow-x-auto pb-3">
           {badges.map((b) => (
             <div key={b.title} className="badge-card">
               <span className={`badge-medal ${b.earned ? "" : "locked"}`}>{b.emoji}</span>
