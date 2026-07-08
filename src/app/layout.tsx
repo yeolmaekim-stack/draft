@@ -22,7 +22,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "야근 메뉴 정해드림",
-  description: "일만 해도 힘든데 뭐 먹을지까지 고민해야겠냐 - 야근 메뉴 추천 데모 사이트",
+  description: "일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요 - 야근 메뉴 추천 데모 사이트",
 };
 
 export default function RootLayout({

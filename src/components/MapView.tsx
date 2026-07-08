@@ -16,7 +16,7 @@ export interface MapPin {
 
 function pinIcon(pin: MapPin) {
   const size = pin.rank === 1 ? 34 : 26;
-  const badge = pin.rank ? `<span style="position:absolute;top:-6px;left:-6px;background:#eda100;color:#1a1200;border-radius:999px;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4)">${pin.rank}</span>`
+  const badge = pin.rank ? `<span style="position:absolute;top:-6px;left:-6px;background:linear-gradient(135deg,#6ea8ff,#a78bfa 55%,#ff8fc7);color:#150c2a;border-radius:999px;width:16px;height:16px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4)">${pin.rank}</span>`
     : "";
   return L.divIcon({
     html: `<div style="position:relative;font-size:${size}px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.55))">${pin.emoji}${badge}</div>`,
@@ -41,7 +41,7 @@ export default function MapView({ pins }: { pins: MapPin[] }) {
       <CircleMarker
         center={[OFFICE_LOCATION.lat, OFFICE_LOCATION.lng]}
         radius={9}
-        pathOptions={{ color: "#eda100", fillColor: "#eda100", fillOpacity: 0.9, weight: 2 }}
+        pathOptions={{ color: "#a78bfa", fillColor: "#a78bfa", fillOpacity: 0.9, weight: 2 }}
       >
         <Popup>🏢 사무실 · {OFFICE_LOCATION.name}</Popup>
       </CircleMarker>

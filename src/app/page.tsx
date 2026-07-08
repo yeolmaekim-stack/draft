@@ -62,35 +62,38 @@ function HomeContent() {
   return (
     <div className="flex flex-col gap-6">
       {/* Hero */}
-      <div className="grid gap-4 sm:grid-cols-[1.4fr_1fr]">
-        <div className="card corner-frame flex flex-col justify-center gap-2 p-6">
-          <span className="eyebrow w-fit">✦ tonight&apos;s pick</span>
-          <p className="text-sm text-[var(--text-muted)]">{formatKoreanDate(todayStr())}</p>
-          <h1 className="font-display gradient-text text-3xl italic font-black sm:text-4xl">
-            오늘 야근, 뭐 먹지?
+      <div className="flex flex-col items-center gap-5 py-8 text-center">
+        <span className="eyebrow">✦ tonight&apos;s pick</span>
+        <div className="corner-frame px-8 py-7 sm:px-16 sm:py-10">
+          <span className="corner-frame-mark-tr" aria-hidden />
+          <span className="corner-frame-mark-bl" aria-hidden />
+          <p className="mb-2 text-sm text-[var(--text-muted)]">{formatKoreanDate(todayStr())}</p>
+          <h1 className="font-display gradient-text text-4xl italic font-black leading-tight sm:text-6xl">
+            오늘 야근,
+            <br className="sm:hidden" /> 뭐 먹지?
           </h1>
-          <p className="text-sm text-[var(--text-secondary)]">
-            일만 해도 힘든데 뭐 먹을지까지 고민해야겠냐 — 인원·취향·날씨·오늘의 기념일까지 반영해서 top5를 골라드려요.
-          </p>
-          {specialDay && (
-            <span className="tag mt-1 w-fit !border-[var(--gold)] !text-[var(--gold)]">
-              {specialDay.emoji} 오늘은 {specialDay.label}
-            </span>
-          )}
         </div>
-        <div className="card flex flex-col justify-center gap-2 p-6">
-          <p className="text-sm text-white/50">사무실 실시간 날씨 · 강남대로 308</p>
-          <div className="flex items-center gap-3">
-            <span className="text-4xl">{WEATHER_EMOJI[weather.condition]}</span>
-            <div>
-              <p className="text-xl font-bold">
-                {WEATHER_LABEL[weather.condition]} · {Math.round(weather.temperature)}°C
-              </p>
-              <p className="text-xs text-white/45">
-                {weather.source === "live" ? "실시간 날씨 반영 중" : "날씨 정보를 불러오지 못해 기본값으로 표시 중"}
-              </p>
-            </div>
-          </div>
+        <p className="max-w-xl text-sm text-[var(--text-secondary)]">
+          일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요 — 인원·취향·날씨·오늘의 기념일까지 반영해서 top5를 골라드려요.
+        </p>
+        {specialDay && (
+          <span className="tag w-fit !border-[var(--purple)] !text-[var(--purple)]">
+            {specialDay.emoji} 오늘은 {specialDay.label}
+          </span>
+        )}
+      </div>
+
+      {/* Weather */}
+      <div className="card flex items-center gap-3 p-5">
+        <span className="text-4xl">{WEATHER_EMOJI[weather.condition]}</span>
+        <div>
+          <p className="text-sm font-bold">
+            {WEATHER_LABEL[weather.condition]} · {Math.round(weather.temperature)}°C
+          </p>
+          <p className="text-xs text-white/45">
+            사무실 실시간 날씨 · 강남대로 308 ·{" "}
+            {weather.source === "live" ? "실시간 날씨 반영 중" : "날씨 정보를 불러오지 못해 기본값으로 표시 중"}
+          </p>
         </div>
       </div>
 
@@ -180,8 +183,8 @@ function HomeContent() {
                 <div className="relative">
                   <MenuImage emoji={r.menu.emoji} gradient={r.menu.gradient} />
                   <span
-                    className="font-display absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-black italic text-[#2a0f1e] shadow-lg"
-                    style={{ background: "linear-gradient(135deg, var(--pink), var(--gold))" }}
+                    className="font-display absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full text-sm font-black italic text-[#150c2a] shadow-lg"
+                    style={{ background: "linear-gradient(135deg, var(--blue), var(--purple) 55%, var(--pink))" }}
                   >
                     {i + 1}
                   </span>

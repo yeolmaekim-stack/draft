@@ -417,8 +417,8 @@ export const SEED_RESTAURANTS: Restaurant[] = [
 export const SEED_SPECIAL_DAYS: SpecialDay[] = [
   { date: "02-14", label: "발렌타인데이", boostTags: ["달달한거", "느끼한거"], emoji: "🍫" },
   { date: "03-14", label: "화이트데이", boostTags: ["달달한거"], emoji: "🍬" },
-  { date: "07-08", label: "2026 월드컵 한국 경기 있는 날 (예시)", boostTags: ["치킨", "튀김", "매운거"], emoji: "⚽" },
-  { date: "07-15", label: "초복 (예시)", boostTags: ["보양식", "닭고기"], emoji: "🐔" },
+  { date: "07-08", label: "복날 - 보양해야돼요", boostTags: ["보양식", "닭고기", "따뜻한거"], emoji: "🐔" },
+  { date: "07-15", label: "초복 - 보양해야돼요", boostTags: ["보양식", "닭고기"], emoji: "🐔" },
   { date: "10-31", label: "할로윈", boostTags: ["매운거"], emoji: "🎃" },
   { date: "12-25", label: "크리스마스", boostTags: ["면요리", "느끼한거"], emoji: "🎄" },
 ];
