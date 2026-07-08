@@ -11,7 +11,7 @@ function seededRandom(seed: number) {
   };
 }
 
-// 야근 = 밤이니까 배경은 항상 깊은 밤/심해 톤으로 고정하고,
+// 야근 = 밤이니까 배경은 항상 깊은 밤하늘 톤으로 고정하고,
 // 날씨 컨디션만 파티클/틴트로 반영합니다. (일몰 시각에 따른 낮/노을 전환 없음)
 const NIGHT_GRADIENT =
   "linear-gradient(180deg, #04030c 0%, #0d0f2b 30%, #161b3d 55%, #140f2e 78%, #0c0a1c 100%)";
@@ -24,15 +24,6 @@ const CONDITION_TINT: Record<WeatherInfo["condition"], string> = {
   thunder: "rgba(6,6,20,0.5)",
   fog: "rgba(160,160,190,0.22)",
 };
-
-function TinyFish({ tint }: { tint: string }) {
-  return (
-    <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
-      <ellipse cx="9" cy="4" rx="7" ry="3" fill={tint} />
-      <path d="M2 4 L-3 1 L-3 7 Z" fill={tint} />
-    </svg>
-  );
-}
 
 export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
   const { condition } = weather;
@@ -51,14 +42,12 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
 
   const glitter = useMemo(() => {
     const rand = seededRandom(91);
-    const hues = ["var(--blue)", "var(--purple)", "var(--pink)", "#ffffff"];
-    return Array.from({ length: 46 }).map((_, i) => ({
+    return Array.from({ length: 22 }).map((_, i) => ({
       left: `${rand() * 100}%`,
       top: `${rand() * 100}%`,
-      size: 6 + rand() * 11,
-      dur: `${(2.5 + rand() * 5).toFixed(2)}s`,
+      size: 5 + rand() * 6,
+      dur: `${(3 + rand() * 5).toFixed(2)}s`,
       delay: `${(rand() * 8).toFixed(2)}s`,
-      hue: hues[Math.floor(rand() * hues.length)],
       key: i,
     }));
   }, []);
@@ -76,43 +65,6 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         key: i,
       };
     });
-  }, []);
-
-  const rays = useMemo(() => {
-    const rand = seededRandom(59);
-    return Array.from({ length: 4 }).map((_, i) => ({
-      left: `${10 + rand() * 60}%`,
-      width: 90 + rand() * 160,
-      rotate: -18 + rand() * 30,
-      dur: `${(7 + rand() * 5).toFixed(2)}s`,
-      delay: `${(rand() * 4).toFixed(2)}s`,
-      key: i,
-    }));
-  }, []);
-
-  const fishSchool = useMemo(() => {
-    const rand = seededRandom(67);
-    const tints = ["rgba(110,140,210,0.5)", "rgba(140,120,200,0.45)", "rgba(160,130,190,0.4)"];
-    return Array.from({ length: 18 }).map((_, i) => ({
-      top: `${48 + rand() * 42}%`,
-      scale: 0.5 + rand() * 0.9,
-      dur: `${(70 + rand() * 60).toFixed(0)}s`,
-      delay: `-${Math.floor(rand() * 60)}s`,
-      reverse: rand() > 0.5,
-      tint: tints[Math.floor(rand() * tints.length)],
-      key: i,
-    }));
-  }, []);
-
-  const bubbles = useMemo(() => {
-    const rand = seededRandom(29);
-    return Array.from({ length: 26 }).map((_, i) => ({
-      left: `${rand() * 100}%`,
-      size: 3 + rand() * 7,
-      dur: `${(9 + rand() * 10).toFixed(2)}s`,
-      delay: `${(rand() * 12).toFixed(2)}s`,
-      key: i,
-    }));
   }, []);
 
   const clouds = useMemo(() => {
@@ -157,34 +109,39 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
       <div className="absolute inset-0" style={{ background: NIGHT_GRADIENT }} />
       <div className="absolute inset-0" style={{ background: CONDITION_TINT[condition] }} />
 
-      {/* 수면 위에서 쏟아지는 빛줄기 - 심해로 들어온 빛 */}
-      {rays.map((r) => (
-        <div
-          key={r.key}
-          className="absolute top-[-10%]"
-          style={{
-            left: r.left,
-            width: r.width,
-            height: "85%",
-            transform: `rotate(${r.rotate}deg)`,
-            transformOrigin: "top center",
-            clipPath: "polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%)",
-            background:
-              "linear-gradient(180deg, rgba(210,225,255,0.28) 0%, rgba(170,195,255,0.1) 40%, transparent 78%)",
-            filter: "blur(5px)",
-            mixBlendMode: "screen",
-            animation: `twinkle ${r.dur} ease-in-out ${r.delay} infinite`,
-          }}
+      {/* 은은하게 흐르는 리본 라인 - 코너 장식 */}
+      <svg className="absolute left-0 top-0 h-[60%] w-[45%] opacity-30" viewBox="0 0 400 400" fill="none">
+        <path
+          d="M-20 0 C 60 60, 40 140, 120 180 S 240 220, 260 320"
+          stroke="url(#ribbon-a)"
+          strokeWidth="1.4"
+          fill="none"
         />
-      ))}
+        <defs>
+          <linearGradient id="ribbon-a" x1="0" y1="0" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="var(--blue)" stopOpacity="0.7" />
+            <stop offset="55%" stopColor="var(--purple)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="var(--pink)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <svg className="absolute right-0 top-0 h-[55%] w-[40%] opacity-25" viewBox="0 0 400 400" fill="none">
+        <path
+          d="M420 0 C 340 50, 360 120, 290 160 S 190 210, 180 300"
+          stroke="url(#ribbon-b)"
+          strokeWidth="1.4"
+          fill="none"
+        />
+        <defs>
+          <linearGradient id="ribbon-b" x1="400" y1="0" x2="150" y2="300" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="var(--pink)" stopOpacity="0.6" />
+            <stop offset="55%" stopColor="var(--purple)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--blue)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+      </svg>
 
-      {/* 심해 느낌의 도트 그리드 텍스처 */}
-      <div
-        className="dot-grid absolute inset-x-0 bottom-0 h-2/3"
-        style={{ maskImage: "linear-gradient(180deg, transparent, black 40%)", opacity: 0.5 }}
-      />
-
-      <svg className="absolute inset-0 h-full w-full opacity-40" preserveAspectRatio="none">
+      <svg className="absolute inset-0 h-full w-full opacity-30" preserveAspectRatio="none">
         {constellation.map((c) => (
           <line
             key={c.key}
@@ -213,28 +170,27 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         />
       ))}
 
-      {/* 글리터처럼 반짝이는 스타 플레어 + halo */}
+      {/* 미니멀한 글리터 반짝임 */}
       {glitter.map((g) => (
         <div key={g.key} className="absolute" style={{ left: g.left, top: g.top }}>
           <div
-            className="absolute rounded-full"
+            className="absolute rounded-full bg-white"
             style={{
-              width: g.size * 3.4,
-              height: g.size * 3.4,
-              left: -(g.size * 1.2),
-              top: -(g.size * 1.2),
-              background: `radial-gradient(circle, ${g.hue} 0%, transparent 72%)`,
-              filter: "blur(3px)",
+              width: g.size * 1.8,
+              height: g.size * 1.8,
+              left: -(g.size * 0.4),
+              top: -(g.size * 0.4),
+              filter: "blur(2.5px)",
+              opacity: 0.5,
               animation: `glitter-halo ${g.dur} ease-in-out ${g.delay} infinite`,
             }}
           />
           <svg
-            className="relative"
+            className="relative text-white"
             style={{
               width: g.size,
               height: g.size,
               animation: `glitter-flare ${g.dur} ease-in-out ${g.delay} infinite`,
-              color: g.hue,
             }}
             viewBox="0 0 24 24"
           >
@@ -246,52 +202,19 @@ export default function BackgroundScene({ weather }: { weather: WeatherInfo }) {
         </div>
       ))}
 
-      {/* 항상 떠 있는 달 - 야근은 늘 밤이니까 */}
+      {/* 은은한 달빛 */}
       <div
         className="absolute rounded-full"
         style={{
           top: "8%",
           right: "10%",
-          width: 76,
-          height: 76,
+          width: 60,
+          height: 60,
           background: "radial-gradient(circle at 35% 35%, #f3f0ff, #b8a8ff 70%)",
-          boxShadow: "0 0 70px 20px rgba(167,139,250,0.3)",
+          boxShadow: "0 0 50px 14px rgba(167,139,250,0.22)",
           animation: "float-slow 9s ease-in-out infinite",
         }}
       />
-
-      {/* 저 아래에서 헤엄치는 작은 물고기 떼 */}
-      {fishSchool.map((f) => (
-        <div
-          key={f.key}
-          className="absolute"
-          style={{
-            top: f.top,
-            left: 0,
-            width: "100%",
-            animation: `${f.reverse ? "drift-reverse" : "drift"} ${f.dur} linear ${f.delay} infinite`,
-          }}
-        >
-          <div style={{ transform: `scale(${f.scale}) ${f.reverse ? "scaleX(-1)" : ""}`, width: "fit-content" }}>
-            <TinyFish tint={f.tint} />
-          </div>
-        </div>
-      ))}
-
-      {/* 위로 올라가는 기포 */}
-      {bubbles.map((b) => (
-        <span
-          key={b.key}
-          className="absolute rounded-full border border-white/25 bg-white/5"
-          style={{
-            left: b.left,
-            bottom: 0,
-            width: b.size,
-            height: b.size,
-            animation: `bubble-rise ${b.dur} linear ${b.delay} infinite`,
-          }}
-        />
-      ))}
 
       {clouds.map((c) => (
         <div

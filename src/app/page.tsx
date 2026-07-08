@@ -62,14 +62,18 @@ function HomeContent() {
   return (
     <div className="flex flex-col gap-6">
       {/* Hero */}
-      <div className="flex flex-col items-center gap-5 py-8 text-center">
-        <span className="eyebrow">✦ tonight&apos;s pick</span>
-        <div className="px-8 py-7 sm:px-16 sm:py-10">
-          <p className="mb-2 text-sm text-[var(--text-muted)]">{formatKoreanDate(todayStr())}</p>
-          <h1 className="font-display gradient-text text-4xl leading-tight sm:text-6xl">
-            오늘 야근,
-            <br className="sm:hidden" /> 뭐 먹지?
+      <div className="flex flex-col items-center gap-4 py-10 text-center">
+        <p className="eyebrow">
+          {formatKoreanDate(todayStr())} · 오늘 야근, 뭐 먹지?
+        </p>
+        <div className="relative flex flex-col items-center px-6 pb-8 pt-16">
+          <span className="beam-glow" aria-hidden />
+          <span className="beam-core" aria-hidden />
+          <h1 className="font-display gradient-text relative text-5xl leading-tight sm:text-7xl">
+            야근 메뉴
+            <br className="sm:hidden" /> 정해드림
           </h1>
+          <span className="portal-ring" aria-hidden />
         </div>
         <p className="max-w-xl text-sm text-[var(--text-secondary)]">
           일만 해도 힘든데 뭐 먹을지까지 고민해야겠나요

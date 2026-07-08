@@ -195,11 +195,6 @@ body {
   color: transparent;
 }
 
-.dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
-  background-size: 26px 26px;
-}
-
 @keyframes float-slow {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -223,6 +218,47 @@ body {
   24% { opacity: 0; transform: scale(1.6); }
 }
 
+@keyframes beam-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.beam-core {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 64px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent, rgba(235, 230, 255, 0.9));
+  box-shadow: 0 0 14px 2px rgba(200, 190, 255, 0.55);
+  animation: beam-pulse 3.5s ease-in-out infinite;
+}
+
+.beam-glow {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(210, 200, 255, 0.35), transparent 70%);
+  filter: blur(6px);
+  animation: beam-pulse 3.5s ease-in-out infinite;
+}
+
+.portal-ring {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: min(80%, 320px);
+  height: 26px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(210, 200, 255, 0.4);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(180, 160, 255, 0.12), transparent 75%);
+}
+
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -231,19 +267,6 @@ body {
 @keyframes drift {
   from { transform: translateX(-10%); }
   to { transform: translateX(110%); }
-}
-
-@keyframes drift-reverse {
-  from { transform: translateX(110%); }
-  to { transform: translateX(-10%); }
-}
-
-@keyframes bubble-rise {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 0.7; }
-  50% { transform: translateY(-50vh) translateX(6px); }
-  90% { opacity: 0.5; }
-  100% { transform: translateY(-100vh) translateX(-4px); opacity: 0; }
 }
 
 @keyframes rain-fall {
