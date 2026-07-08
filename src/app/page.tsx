@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { useWeather } from "@/lib/WeatherContext";
@@ -146,9 +147,9 @@ function HomeContent() {
 
         <p className="text-xs text-white/40">
           오늘 점심 기록 {todayLunchCount}명 입력됨 — 점심이랑 안 겹치게 추천에 반영돼요.{" "}
-          <a href="/lunch" className="underline hover:text-white/70">
+          <Link href="/lunch" className="underline hover:text-white/70">
             점심 기록하러 가기
-          </a>
+          </Link>
         </p>
 
         {output.excludedAlways.length > 0 && (
