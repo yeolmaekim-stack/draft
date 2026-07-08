@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import { useStore } from "@/lib/store";
 import Hydrated from "@/components/Hydrated";
+import { SEED_RESTAURANTS } from "@/lib/seedData";
 import {
   weeklyStats,
   monthlyStats,
@@ -22,6 +23,7 @@ import {
   weeklyTrend,
   dayOfWeekDistribution,
   modeSplit,
+  computeBadges,
 } from "@/lib/analytics";
 
 const SERIES = ["#3987e5", "#9085e9", "#d55181"];
@@ -48,12 +50,30 @@ function AnalyticsContent() {
   const dow = useMemo(() => dayOfWeekDistribution(dinnerLogs), [dinnerLogs]);
   const mode = useMemo(() => modeSplit(dinnerLogs), [dinnerLogs]);
   const modeTotal = mode.dineIn + mode.delivery || 1;
+  const badges = useMemo(() => computeBadges(dinnerLogs, SEED_RESTAURANTS), [dinnerLogs]);
 
   const bestRestaurant = topRestaurants[0]?.name ?? "-";
   const bestMenu = topMenus[0]?.name ?? "-";
 
   return (
     <div className="flex flex-col gap-5">
+      <div className="card-solid p-5">
+        <span className="eyebrow mb-2 w-fit">✦ badges</span>
+        <p className="mb-1 text-sm font-semibold text-white/80">우리팀 야근 뱃지</p>
+        <p className="mb-4 text-xs text-white/45">
+          기록된 야근 식사 패턴으로 자동으로 열리는 뱃지예요. 흐린 뱃지는 아직 조건 미달성!
+        </p>
+        <div className="scrollbar-thin flex gap-4 overflow-x-auto pb-1">
+          {badges.map((b) => (
+            <div key={b.title} className="badge-card">
+              <span className={`badge-medal ${b.earned ? "" : "locked"}`}>{b.emoji}</span>
+              <p className="text-[13px] font-bold leading-tight">{b.title}</p>
+              <p className="text-[11px] leading-snug text-white/45">{b.subtitle}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div>
         <span className="eyebrow mb-2 w-fit">✦ the stats</span>
         <h1 className="font-display gradient-text text-2xl sm:text-3xl">우리팀 야근 메뉴 분석표</h1>

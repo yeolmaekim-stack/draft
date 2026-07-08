@@ -195,6 +195,36 @@ body {
   color: transparent;
 }
 
+.badge-card {
+  display: flex;
+  width: 128px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.badge-medal {
+  display: flex;
+  height: 60px;
+  width: 60px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 26px;
+  background: linear-gradient(135deg, var(--blue), var(--purple) 55%, var(--pink));
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06), 0 8px 22px rgba(167, 139, 250, 0.3);
+}
+
+.badge-medal.locked {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
 @keyframes float-slow {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
