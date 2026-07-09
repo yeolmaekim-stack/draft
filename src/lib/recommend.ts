@@ -12,9 +12,19 @@ import type {
 import { SEED_RESTAURANTS, SEED_SPECIAL_DAYS } from "@/lib/seedData";
 import { addDays, toDateStr, toMMDD } from "@/lib/dates";
 
+// 데모 사이트라 오늘이 실제 달력상의 기념일(월드컵/초복/크리스마스 등)과
+// 우연히 겹치면 그걸 보여주고, 아니면 항상 복날 예시를 폴백으로 띄워줘요.
+const FALLBACK_SPECIAL_DAY: Omit<SpecialDay, "date"> = {
+  label: "복날 - 보양해야돼요",
+  boostTags: ["보양식", "닭고기", "따뜻한거"],
+  emoji: "🐔",
+};
+
 export function getTodaySpecialDay(): SpecialDay | null {
   const mmdd = toMMDD(new Date());
-  return SEED_SPECIAL_DAYS.find((s) => s.date === mmdd) ?? null;
+  const matched = SEED_SPECIAL_DAYS.find((s) => s.date === mmdd);
+  if (matched) return matched;
+  return { date: mmdd, ...FALLBACK_SPECIAL_DAY };
 }
 
 function overlap(a: string[], b: string[]): string[] {
